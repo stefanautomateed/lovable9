@@ -10,6 +10,88 @@ import {
 export const runtime = "edge";
 
 /**
+ * Validate and fix App.tsx to ensure it imports and renders all components
+ */
+function validateAndFixAppTsx(files: any[]): any[] {
+  // Find App.tsx
+  const appTsxIndex = files.findIndex((f) =>
+    f.path === "src/App.tsx" || f.path === "App.tsx"
+  );
+
+  if (appTsxIndex === -1) return files;
+
+  // Find all component files
+  const componentFiles = files.filter((f) =>
+    f.path.includes("/components/") && f.path.endsWith(".tsx")
+  );
+
+  if (componentFiles.length === 0) return files;
+
+  const appFile = files[appTsxIndex];
+  const appContent = appFile.contents || "";
+
+  // Check if App.tsx imports and renders the components
+  const missingImports: string[] = [];
+  const missingRenders: string[] = [];
+
+  for (const comp of componentFiles) {
+    const componentName = comp.path.split("/").pop()?.replace(".tsx", "") || "";
+
+    // Check if imported
+    const importPattern = new RegExp(`import\\s+${componentName}\\s+from`, "i");
+    if (!importPattern.test(appContent)) {
+      missingImports.push(componentName);
+    }
+
+    // Check if rendered
+    const renderPattern = new RegExp(`<${componentName}[\\s/>]`, "i");
+    if (!renderPattern.test(appContent)) {
+      missingRenders.push(componentName);
+    }
+  }
+
+  // If App.tsx is missing imports or renders, regenerate it
+  if (missingImports.length > 0 || missingRenders.length > 0) {
+    console.log(`Fixing App.tsx - missing imports: ${missingImports.join(", ")}, missing renders: ${missingRenders.join(", ")}`);
+
+    // Generate proper imports
+    const imports = componentFiles
+      .map((comp) => {
+        const componentName = comp.path.split("/").pop()?.replace(".tsx", "");
+        return `import ${componentName} from './components/${componentName}';`;
+      })
+      .join("\n");
+
+    // Generate proper renders
+    const renders = componentFiles
+      .map((comp) => {
+        const componentName = comp.path.split("/").pop()?.replace(".tsx", "");
+        return `      <${componentName} />`;
+      })
+      .join("\n");
+
+    // Create new App.tsx
+    const newAppContent = `${imports}
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-white">
+${renders}
+    </div>
+  );
+}`;
+
+    // Replace App.tsx
+    files[appTsxIndex] = {
+      ...appFile,
+      contents: newAppContent,
+    };
+  }
+
+  return files;
+}
+
+/**
  * Generate a comprehensive fallback app based on the blueprint
  */
 function generateFallbackApp(blueprint: any): Array<{ type: "file"; file: any }> {
@@ -1007,7 +1089,13 @@ export async function POST(req: NextRequest) {
           filesData = { files: [] };
         }
 
-        const generatedFiles = filesData.files || [];
+        let generatedFiles = filesData.files || [];
+
+        // Validate and fix App.tsx to ensure it imports/renders all components
+        if (generatedFiles.length > 0) {
+          generatedFiles = validateAndFixAppTsx(generatedFiles);
+        }
+
         let fileCount = 0;
 
         // Stream each file to the client
