@@ -161,5 +161,5 @@ export function getOpenAIClient(): OpenAIClient {
  * Get the default model from environment or fallback
  */
 export function getDefaultModel(): string {
-  return process.env.OPENAI_MODEL || "gpt-4o-mini";
+  return process.env.OPENAI_MODEL || "gpt-5-nano";
 }

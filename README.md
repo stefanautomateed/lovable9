@@ -1,26 +1,38 @@
 # VibeSDK MVP
 
-A simplified AI app builder running entirely on Vercel using Next.js and OpenAI. Generate complete React web applications from plain-English descriptions with live in-browser preview.
+A simplified AI app builder running entirely on Vercel using Next.js and OpenAI GPT-5 Nano. Generate stunning, design-rich React web applications with WOW factor from plain-English descriptions, complete with live in-browser preview.
 
 ## Features
 
-- **AI-Powered Generation**: Describe any web app and get a complete React application
+- **AI-Powered Generation**: Describe any web app and get a complete, visually stunning React application
+- **Design-Rich Components**: Modern gradients, animations, glassmorphism, and micro-interactions
 - **Structured Blueprint**: Generates a detailed implementation plan before coding
 - **File Explorer**: Browse and view all generated files in a tree structure
 - **Code Viewer**: Monaco editor integration for syntax-highlighted code viewing
 - **Live Preview**: In-browser preview using Sandpack (no server-side sandbox needed)
 - **Iterative Refinement**: Chat back to refine and regenerate files incrementally
 - **Session Persistence**: Your work is saved in localStorage and restored on reload
+- **WOW Factor Design**: Landing pages with impressive hero sections, testimonials, pricing, and CTAs
 
 ## Tech Stack
 
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
-- **AI**: OpenAI API (gpt-4o-mini or gpt-4-turbo)
+- **AI**: OpenAI GPT-5 Nano (fast, cost-efficient, 400K context window)
 - **Preview**: Sandpack (@codesandbox/sandpack-react)
 - **Code Editor**: Monaco Editor (@monaco-editor/react)
 - **Validation**: Zod for runtime type safety
 - **Notifications**: Sonner for toast messages
 - **Deployment**: Vercel (serverless functions only)
+
+## GPT-5 Nano
+
+This project uses **GPT-5 Nano**, OpenAI's fastest and most cost-efficient version of GPT-5:
+
+- **Speed**: Very fast response times for quick generation
+- **Cost**: Only $0.05/1M input tokens, $0.40/1M output tokens
+- **Context**: 400,000 token context window
+- **Output**: Up to 128,000 max output tokens
+- **Perfect for**: Code generation, instruction following, and design-rich UI creation
 
 ## Project Structure
 
@@ -79,7 +91,7 @@ Create a `.env.local` file in the root directory:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-5-nano
 ```
 
 You can get an OpenAI API key from [OpenAI Platform](https://platform.openai.com/api-keys).
