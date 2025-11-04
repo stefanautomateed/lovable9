@@ -3,6 +3,12 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "claude/vibesddk-mvp-vercel-011CUnr4vY4bmKK9spxQNTvp": true
+    }
+  },
   "functions": {
     "app/api/generate/route.ts": {
       "maxDuration": 60
