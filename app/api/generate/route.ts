@@ -846,7 +846,7 @@ COLOR PALETTE TO USE:
 - Accents: ring-2 ring-blue-500, border-gradient, shadow-blue-500/50
 
 REQUIRED FILE STRUCTURE:
-- src/App.tsx - Main app component importing all sections
+- src/App.tsx - Main app component that MUST import and render ALL page components
 - src/components/Hero.tsx - Eye-catching hero with animations
 - src/components/Features.tsx - Feature grid with hover effects
 - src/components/Pricing.tsx - Pricing cards with highlights
@@ -856,6 +856,22 @@ REQUIRED FILE STRUCTURE:
 - src/index.tsx - Entry point
 - src/styles.css - Tailwind + custom animations
 - Additional component files as needed
+
+CRITICAL FOR App.tsx:
+- MUST have proper imports for ALL components you create
+- MUST render all imported components in the JSX
+- Example structure:
+  import ComponentA from './components/ComponentA';
+  import ComponentB from './components/ComponentB';
+
+  export default function App() {
+    return (
+      <div>
+        <ComponentA />
+        <ComponentB />
+      </div>
+    );
+  }
 
 Return ONLY a JSON object (no markdown, no code fences) with this structure:
 {
@@ -929,8 +945,7 @@ export async function POST(req: NextRequest) {
             { role: "system", content: BLUEPRINT_SYSTEM_PROMPT },
             { role: "user", content: request.prompt },
           ],
-          temperature: 0.7,
-          max_tokens: 1000,
+          max_completion_tokens: 1000,
           response_format: { type: "json_object" },
         });
 
@@ -968,8 +983,7 @@ export async function POST(req: NextRequest) {
             { role: "system", content: FILES_SYSTEM_PROMPT },
             { role: "user", content: filesPrompt },
           ],
-          temperature: 0.7,
-          max_tokens: 16000,
+          max_completion_tokens: 16000,
           response_format: { type: "json_object" },
         });
 

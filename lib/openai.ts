@@ -12,6 +12,7 @@ export interface OpenAIChatCompletionRequest {
   messages: OpenAIMessage[];
   temperature?: number;
   max_tokens?: number;
+  max_completion_tokens?: number;
   stream?: boolean;
   response_format?: { type: "json_object" | "text" };
 }
