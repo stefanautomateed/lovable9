@@ -58,7 +58,7 @@ root.render(
 );`;
 
 /**
- * Default index.html
+ * Default index.html with Tailwind CSS CDN
  */
 const DEFAULT_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -66,6 +66,7 @@ const DEFAULT_HTML = `<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -108,8 +109,22 @@ export function convertToSandpackFiles(
       path = "/" + path;
     }
 
+    let contents = file.contents;
+
+    // Inject Tailwind CDN into HTML files if not already present
+    if ((path.endsWith(".html") || path.includes("/index.html")) &&
+        !contents.includes("tailwindcss")) {
+      // Add Tailwind CDN before </head>
+      if (contents.includes("</head>")) {
+        contents = contents.replace(
+          "</head>",
+          '    <script src="https://cdn.tailwindcss.com"></script>\n  </head>'
+        );
+      }
+    }
+
     files[path] = {
-      code: file.contents,
+      code: contents,
     };
   }
 

@@ -1102,6 +1102,12 @@ export async function POST(req: NextRequest) {
         if (generatedFiles.length > 0) {
           for (const file of generatedFiles) {
             if (file.path && file.contents) {
+              // Show which file is being added
+              await writeMessage({
+                type: "status",
+                message: `Adding ${file.path}...`,
+              });
+
               await writeMessage({
                 type: "file",
                 file: {
