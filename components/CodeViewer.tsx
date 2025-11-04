@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import type { GeneratedFile } from "@/lib/schemas";
 
 interface CodeViewerProps {
-  file: GeneratedFile | null;
+  file: GeneratedFile | undefined;
 }
 
 function getLanguageFromPath(path: string): string {

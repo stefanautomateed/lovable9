@@ -15,9 +15,9 @@ type GenerationState = "idle" | "generating" | "complete" | "error";
 
 export default function Home() {
   const [state, setState] = useState<GenerationState>("idle");
-  const [blueprint, setBlueprint] = useState<Blueprint | null>(null);
+  const [blueprint, setBlueprint] = useState<Blueprint | undefined>(undefined);
   const [files, setFiles] = useState<GeneratedFile[]>([]);
-  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
+  const [selectedFilePath, setSelectedFilePath] = useState<string | undefined>(undefined);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
 
@@ -25,7 +25,7 @@ export default function Home() {
   useEffect(() => {
     const session = loadSession();
     if (session) {
-      setBlueprint(session.blueprint || null);
+      setBlueprint(session.blueprint);
       setFiles(session.files);
       if (session.files.length > 0) {
         setState("complete");
@@ -45,7 +45,7 @@ export default function Home() {
     }
   }, [blueprint, files]);
 
-  const selectedFile = files.find((f) => f.path === selectedFilePath) || null;
+  const selectedFile = files.find((f) => f.path === selectedFilePath) || undefined;
 
   const handleGenerate = useCallback(
     async (prompt: string, isRefinement: boolean = false) => {
@@ -168,9 +168,9 @@ export default function Home() {
     }
 
     setState("idle");
-    setBlueprint(null);
+    setBlueprint(undefined);
     setFiles([]);
-    setSelectedFilePath(null);
+    setSelectedFilePath(undefined);
     setStatusMessage("");
     setMessages([]);
   };

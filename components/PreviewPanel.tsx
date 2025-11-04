@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sandpack, SandpackProvider, SandpackLayout, SandpackPreview } from "@codesandbox/sandpack-react";
+import { SandpackProvider, SandpackPreview } from "@codesandbox/sandpack-react";
 import type { SandpackFiles } from "@codesandbox/sandpack-react";
 import type { GeneratedFile } from "@/lib/schemas";
 import { convertToSandpackFiles, validateSandpackFiles } from "@/lib/sandpackAdapter";
@@ -72,17 +72,11 @@ export default function PreviewPanel({ files }: PreviewPanelProps) {
       )}
 
       <div className="flex-1 overflow-hidden">
-        <Sandpack
+        <SandpackProvider
           template="react-ts"
           files={sandpackFiles}
           theme="light"
           options={{
-            showNavigator: false,
-            showTabs: false,
-            showLineNumbers: false,
-            showInlineErrors: true,
-            wrapContent: true,
-            editorHeight: "100%",
             autorun: true,
             autoReload: true,
           }}
@@ -93,14 +87,12 @@ export default function PreviewPanel({ files }: PreviewPanelProps) {
             },
           }}
         >
-          <SandpackLayout>
-            <SandpackPreview
-              showOpenInCodeSandbox={false}
-              showRefreshButton={true}
-              style={{ height: "100%" }}
-            />
-          </SandpackLayout>
-        </Sandpack>
+          <SandpackPreview
+            showOpenInCodeSandbox={false}
+            showRefreshButton={true}
+            style={{ height: "100%", width: "100%" }}
+          />
+        </SandpackProvider>
       </div>
     </div>
   );
