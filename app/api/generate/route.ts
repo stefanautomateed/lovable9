@@ -955,6 +955,16 @@ export async function POST(req: NextRequest) {
         let blueprint;
         try {
           blueprint = JSON.parse(blueprintText);
+
+          // Ensure required fields exist with fallbacks
+          if (!blueprint.title || typeof blueprint.title !== 'string') {
+            blueprint.title = "Generated App";
+          }
+          if (!blueprint.description || typeof blueprint.description !== 'string') {
+            // Use first 200 chars of prompt as description
+            blueprint.description = request.prompt.slice(0, 200);
+          }
+
           await writeMessage({ type: "blueprint", blueprint });
         } catch (error) {
           await writeMessage({
